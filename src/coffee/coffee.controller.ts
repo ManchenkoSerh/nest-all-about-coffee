@@ -1,5 +1,7 @@
 import { CoffeeService } from './coffee.service';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { CreateCoffeeDto } from './dto/create-coffee.dto';
+import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 
 @Controller('coffee')
 export class CoffeeController {
@@ -7,27 +9,27 @@ export class CoffeeController {
 
   @Get()
   findAll(@Query() paginationQuery) {
-    const { limit, offset } = paginationQuery 
-    return `This action returns all coffees. Limit: ${limit}, Offset: ${offset}`;
+    //const { limit, offset } = paginationQuery 
+    return this.coffeeService.findAll()
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return `This action returns ${id} coffee`;
+    return this.coffeeService.findOne(id)
   }
 
   @Post()
-  create(@Body() body) {
-    return body
+  create(@Body() createCoffeeDto: CreateCoffeeDto) {
+    return this.coffeeService.create(createCoffeeDto)
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body) {
-    return `This action updates #${id} coffee`
+  update(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto) {
+    return this.coffeeService.update(id, updateCoffeeDto)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return `This action removes #${id} coffee`
+    return this.coffeeService.remove(id)
   }
 }
